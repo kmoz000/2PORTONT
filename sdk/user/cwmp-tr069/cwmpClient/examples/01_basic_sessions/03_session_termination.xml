@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    TR-069 Session Termination Examples
+    Shows different ways a session can be terminated
+-->
+
+<!-- Method 1: ACS terminates session with empty HTTP response -->
+<!-- After receiving any CWMP message, ACS can respond with empty body -->
+
+<!-- Method 2: CPE terminates with NoMoreRequests -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">1003</cwmp:ID>
+        <cwmp:NoMoreRequests>1</cwmp:NoMoreRequests>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValuesResponse>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[1]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.UpTime</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">86400</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:GetParameterValuesResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- Method 3: ACS sets HoldRequests to prevent new sessions -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">1004</cwmp:ID>
+        <cwmp:HoldRequests>1</cwmp:HoldRequests>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValues>
+            <ParameterNames soap:arrayType="xsd:string[1]">
+                <string>InternetGatewayDevice.DeviceInfo.UpTime</string>
+            </ParameterNames>
+        </cwmp:GetParameterValues>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE Response acknowledges HoldRequests -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">1004</cwmp:ID>
+        <cwmp:HoldRequests>1</cwmp:HoldRequests>
+        <cwmp:NoMoreRequests>1</cwmp:NoMoreRequests>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValuesResponse>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[1]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.UpTime</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">86400</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:GetParameterValuesResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- 
+    Session Termination Notes:
+    1. Empty HTTP response (status 204 No Content) terminates session immediately
+    2. NoMoreRequests=1 indicates sender has no more requests in this session
+    3. HoldRequests=1 prevents CPE from initiating new sessions
+    4. Session timeout also terminates session (typically 30 seconds)
+-->

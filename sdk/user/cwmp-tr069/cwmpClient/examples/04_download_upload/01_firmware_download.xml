@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Firmware Download Session Example
+    Complete session showing firmware download from ACS to CPE
+-->
+
+<!-- Session 1: ACS initiates firmware download -->
+<!-- ACS -> CPE: Download Request -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">40001</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:Download>
+            <CommandKey>FirmwareUpdate_v2.1.0</CommandKey>
+            <FileType>1 Firmware Upgrade Image</FileType>
+            <URL>https://firmware.example.com/downloads/rtl8672_v2.1.0.bin</URL>
+            <Username>download_user</Username>
+            <Password>dl_pass123</Password>
+            <FileSize>16777216</FileSize>
+            <TargetFileName>firmware.bin</TargetFileName>
+            <DelaySeconds>60</DelaySeconds>
+            <SuccessURL>https://acs.example.com/success</SuccessURL>
+            <FailureURL>https://acs.example.com/failure</FailureURL>
+        </cwmp:Download>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE -> ACS: DownloadResponse (Accept) -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">40001</cwmp:ID>
+        <cwmp:NoMoreRequests>1</cwmp:NoMoreRequests>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:DownloadResponse>
+            <Status>1</Status>
+            <StartTime>2024-01-15T14:00:00Z</StartTime>
+            <CompleteTime>0001-01-01T00:00:00Z</CompleteTime>
+        </cwmp:DownloadResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- Session 2: CPE reports download progress (optional) -->
+<!-- CPE -> ACS: TransferComplete Inform (Progress Update) -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">40002</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:Inform>
+            <DeviceId>
+                <Manufacturer>Realtek</Manufacturer>
+                <OUI>00E04C</OUI>
+                <ProductClass>RTL8672</ProductClass>
+                <SerialNumber>RTK123456789</SerialNumber>
+            </DeviceId>
+            <Event soap:arrayType="cwmp:EventStruct[1]">
+                <EventStruct>
+                    <EventCode>7 TRANSFER COMPLETE</EventCode>
+                    <CommandKey>FirmwareUpdate_v2.1.0</CommandKey>
+                </EventStruct>
+            </Event>
+            <MaxEnvelopes>1</MaxEnvelopes>
+            <CurrentTime>2024-01-15T14:05:30Z</CurrentTime>
+            <RetryCount>0</RetryCount>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[3]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DownloadDiagnostics.DownloadTransports</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">HTTPS</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DownloadDiagnostics.DownloadURL</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">https://firmware.example.com/downloads/rtl8672_v2.1.0.bin</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DownloadDiagnostics.TotalBytesReceived</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">16777216</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:Inform>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- ACS -> CPE: InformResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">40002</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:InformResponse>
+            <MaxEnvelopes>1</MaxEnvelopes>
+        </cwmp:InformResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- ACS -> CPE: GetQueuedTransfers to check status -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">40003</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetQueuedTransfers>
+        </cwmp:GetQueuedTransfers>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE -> ACS: GetQueuedTransfersResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">40003</cwmp:ID>
+        <cwmp:NoMoreRequests>1</cwmp:NoMoreRequests>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetQueuedTransfersResponse>
+            <TransferList soap:arrayType="cwmp:QueuedTransferStruct[1]">
+                <QueuedTransferStruct>
+                    <CommandKey>FirmwareUpdate_v2.1.0</CommandKey>
+                    <State>3</State>
+                    <IsDownload>1</IsDownload>
+                    <FileType>1 Firmware Upgrade Image</FileType>
+                    <FileSize>16777216</FileSize>
+                    <TargetFileName>firmware.bin</TargetFileName>
+                </QueuedTransferStruct>
+            </TransferList>
+        </cwmp:GetQueuedTransfersResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- Session 3: CPE reboots and sends final completion -->
+<!-- CPE -> ACS: Boot Inform after firmware installation -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">40004</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:Inform>
+            <DeviceId>
+                <Manufacturer>Realtek</Manufacturer>
+                <OUI>00E04C</OUI>
+                <ProductClass>RTL8672</ProductClass>
+                <SerialNumber>RTK123456789</SerialNumber>
+            </DeviceId>
+            <Event soap:arrayType="cwmp:EventStruct[2]">
+                <EventStruct>
+                    <EventCode>1 BOOT</EventCode>
+                    <CommandKey></CommandKey>
+                </EventStruct>
+                <EventStruct>
+                    <EventCode>M Reboot</EventCode>
+                    <CommandKey>FirmwareUpdate_v2.1.0</CommandKey>
+                </EventStruct>
+            </Event>
+            <MaxEnvelopes>1</MaxEnvelopes>
+            <CurrentTime>2024-01-15T14:10:15Z</CurrentTime>
+            <RetryCount>0</RetryCount>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[2]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SoftwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2.1.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.UpTime</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">15</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:Inform>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- ACS -> CPE: InformResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">40004</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:InformResponse>
+            <MaxEnvelopes>1</MaxEnvelopes>
+        </cwmp:InformResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- 
+    Firmware Download Notes:
+    1. DelaySeconds allows CPE to defer download start
+    2. Status=1 means download accepted and will start
+    3. TransferComplete event sent when download finishes
+    4. Device typically reboots after firmware installation
+    5. Updated SoftwareVersion confirms successful upgrade
+-->

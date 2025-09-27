@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Sample TR-069 Configuration Examples
+    Common configuration scenarios for CWMP clients
+-->
+
+<!-- Configuration 1: Basic WiFi Setup -->
+<Configuration name="BasicWiFiSetup">
+    <Description>Configure basic WiFi settings</Description>
+    <Parameters>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Enable</Name>
+            <Value type="boolean">true</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID</Name>
+            <Value type="string">HomeNetwork</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.BeaconType</Name>
+            <Value type="string">WPA2-PSK</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.BasicEncryptionModes</Name>
+            <Value type="string">AESEncryption</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.WPAEncryptionModes</Name>
+            <Value type="string">AESEncryption</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey.1.KeyPassphrase</Name>
+            <Value type="string">MySecurePassword123</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Channel</Name>
+            <Value type="unsignedInt">11</Value>
+        </Parameter>
+    </Parameters>
+</Configuration>
+
+<!-- Configuration 2: Management Server Settings -->
+<Configuration name="ManagementServerConfig">
+    <Description>Configure TR-069 management server settings</Description>
+    <Parameters>
+        <Parameter>
+            <Name>InternetGatewayDevice.ManagementServer.URL</Name>
+            <Value type="string">https://acs.example.com:7547/cwmp</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.ManagementServer.Username</Name>
+            <Value type="string">cpe_device_001</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.ManagementServer.Password</Name>
+            <Value type="string">SecurePassword456</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.ManagementServer.PeriodicInformEnable</Name>
+            <Value type="boolean">true</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.ManagementServer.PeriodicInformInterval</Name>
+            <Value type="unsignedInt">3600</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.ManagementServer.ConnectionRequestUsername</Name>
+            <Value type="string">acs_admin</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.ManagementServer.ConnectionRequestPassword</Name>
+            <Value type="string">AcsPassword789</Value>
+        </Parameter>
+    </Parameters>
+</Configuration>
+
+<!-- Configuration 3: WAN Connection Settings -->
+<Configuration name="WANConnectionConfig">
+    <Description>Configure WAN connection parameters</Description>
+    <Parameters>
+        <Parameter>
+            <Name>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.Enable</Name>
+            <Value type="boolean">true</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.ConnectionType</Name>
+            <Value type="string">IP_Routed</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.Name</Name>
+            <Value type="string">WAN_Connection</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.AddressingType</Name>
+            <Value type="string">DHCP</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.DefaultGateway</Name>
+            <Value type="string">192.168.100.1</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.DNSServers</Name>
+            <Value type="string">8.8.8.8,8.8.4.4</Value>
+        </Parameter>
+    </Parameters>
+</Configuration>
+
+<!-- Configuration 4: Time Settings -->
+<Configuration name="TimeConfig">
+    <Description>Configure time and NTP settings</Description>
+    <Parameters>
+        <Parameter>
+            <Name>InternetGatewayDevice.Time.Enable</Name>
+            <Value type="boolean">true</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.Time.NTPServer1</Name>
+            <Value type="string">pool.ntp.org</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.Time.NTPServer2</Name>
+            <Value type="string">time.google.com</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.Time.LocalTimeZone</Name>
+            <Value type="string">EST5EDT,M3.2.0,M11.1.0</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.Time.LocalTimeZoneName</Name>
+            <Value type="string">Eastern Standard Time</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.Time.DaylightSavingsUsed</Name>
+            <Value type="boolean">true</Value>
+        </Parameter>
+    </Parameters>
+</Configuration>
+
+<!-- Configuration 5: Firewall Rules -->
+<Configuration name="FirewallConfig">
+    <Description>Basic firewall configuration</Description>
+    <Parameters>
+        <Parameter>
+            <Name>InternetGatewayDevice.Layer3Forwarding.DefaultConnectionService</Name>
+            <Value type="string">InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.Layer3Forwarding.ForwardNumberOfEntries</Name>
+            <Value type="unsignedInt">2</Value>
+        </Parameter>
+    </Parameters>
+    <Objects>
+        <AddObject>
+            <ObjectName>InternetGatewayDevice.Layer3Forwarding.Forwarding.</ObjectName>
+            <ParameterList>
+                <Parameter>
+                    <Name>Enable</Name>
+                    <Value type="boolean">true</Value>
+                </Parameter>
+                <Parameter>
+                    <Name>Status</Name>
+                    <Value type="string">Enabled</Value>
+                </Parameter>
+                <Parameter>
+                    <Name>Type</Name>
+                    <Value type="string">Host</Value>
+                </Parameter>
+                <Parameter>
+                    <Name>DestIPAddress</Name>
+                    <Value type="string">0.0.0.0</Value>
+                </Parameter>
+                <Parameter>
+                    <Name>DestSubnetMask</Name>
+                    <Value type="string">0.0.0.0</Value>
+                </Parameter>
+                <Parameter>
+                    <Name>GatewayIPAddress</Name>
+                    <Value type="string">192.168.100.1</Value>
+                </Parameter>
+                <Parameter>
+                    <Name>Interface</Name>
+                    <Value type="string">InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1</Value>
+                </Parameter>
+                <Parameter>
+                    <Name>Metric</Name>
+                    <Value type="int">1</Value>
+                </Parameter>
+            </ParameterList>
+        </AddObject>
+    </Objects>
+</Configuration>
+
+<!-- Configuration Template for Custom Deployments -->
+<ConfigurationTemplate name="CustomDeployment">
+    <Description>Template for custom device deployments</Description>
+    <Variables>
+        <Variable name="DEVICE_SERIAL" default="UNKNOWN"/>
+        <Variable name="ACS_URL" default="https://acs.example.com:7547/cwmp"/>
+        <Variable name="WIFI_SSID" default="DefaultSSID"/>
+        <Variable name="WIFI_PASSWORD" default="DefaultPassword"/>
+        <Variable name="TIMEZONE" default="UTC0"/>
+    </Variables>
+    <Parameters>
+        <Parameter>
+            <Name>InternetGatewayDevice.ManagementServer.URL</Name>
+            <Value type="string">${ACS_URL}</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID</Name>
+            <Value type="string">${WIFI_SSID}_${DEVICE_SERIAL}</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey.1.KeyPassphrase</Name>
+            <Value type="string">${WIFI_PASSWORD}</Value>
+        </Parameter>
+        <Parameter>
+            <Name>InternetGatewayDevice.Time.LocalTimeZone</Name>
+            <Value type="string">${TIMEZONE}</Value>
+        </Parameter>
+    </Parameters>
+</ConfigurationTemplate>

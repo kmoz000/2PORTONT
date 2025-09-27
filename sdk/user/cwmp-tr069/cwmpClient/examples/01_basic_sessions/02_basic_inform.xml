@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Basic TR-069 Inform Session with Device Parameters
+    Shows typical Inform message with device information
+-->
+
+<!-- CPE -> ACS: Inform Request with Device Info -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">1002</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:Inform>
+            <DeviceId>
+                <Manufacturer>Realtek</Manufacturer>
+                <OUI>00E04C</OUI>
+                <ProductClass>RTL8672</ProductClass>
+                <SerialNumber>RTK123456789</SerialNumber>
+            </DeviceId>
+            <Event soap:arrayType="cwmp:EventStruct[2]">
+                <EventStruct>
+                    <EventCode>1 BOOT</EventCode>
+                    <CommandKey></CommandKey>
+                </EventStruct>
+                <EventStruct>
+                    <EventCode>2 PERIODIC</EventCode>
+                    <CommandKey></CommandKey>
+                </EventStruct>
+            </Event>
+            <MaxEnvelopes>1</MaxEnvelopes>
+            <CurrentTime>2024-01-15T10:30:00Z</CurrentTime>
+            <RetryCount>0</RetryCount>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[8]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.Manufacturer</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Realtek</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ManufacturerOUI</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">00E04C</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ProductClass</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">RTL8672</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SerialNumber</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">RTK123456789</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.HardwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SoftwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">V2.0.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SpecVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ProvisioningCode</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:Inform>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- ACS -> CPE: InformResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">1002</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:InformResponse>
+            <MaxEnvelopes>1</MaxEnvelopes>
+        </cwmp:InformResponse>
+    </soap:Body>
+</soap:Envelope>

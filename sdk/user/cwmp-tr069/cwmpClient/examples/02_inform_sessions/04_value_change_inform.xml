@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Value Change Inform Session
+    Triggered when a parameter with notification attribute changes
+-->
+
+<!-- CPE -> ACS: Value Change Inform -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">10004</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:Inform>
+            <DeviceId>
+                <Manufacturer>Realtek</Manufacturer>
+                <OUI>00E04C</OUI>
+                <ProductClass>RTL8672</ProductClass>
+                <SerialNumber>RTK123456789</SerialNumber>
+            </DeviceId>
+            <Event soap:arrayType="cwmp:EventStruct[1]">
+                <EventStruct>
+                    <EventCode>4 VALUE CHANGE</EventCode>
+                    <CommandKey>SetWLANConfig_001</CommandKey>
+                </EventStruct>
+            </Event>
+            <MaxEnvelopes>1</MaxEnvelopes>
+            <CurrentTime>2024-01-15T12:15:30Z</CurrentTime>
+            <RetryCount>0</RetryCount>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[6]">
+                <!-- Changed Parameters -->
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">MyNetwork_5G</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Channel</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">149</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.BeaconType</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">WPA2-PSK</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Standard</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">802.11ac</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.TransmitPower</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">100</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Status</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Up</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:Inform>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- ACS -> CPE: InformResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">10004</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:InformResponse>
+            <MaxEnvelopes>1</MaxEnvelopes>
+        </cwmp:InformResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- ACS -> CPE: GetParameterValues to verify changes -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">10005</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValues>
+            <ParameterNames soap:arrayType="xsd:string[3]">
+                <string>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID</string>
+                <string>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Channel</string>
+                <string>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Status</string>
+            </ParameterNames>
+        </cwmp:GetParameterValues>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE -> ACS: GetParameterValuesResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">10005</cwmp:ID>
+        <cwmp:NoMoreRequests>1</cwmp:NoMoreRequests>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValuesResponse>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[3]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">MyNetwork_5G</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Channel</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">149</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Status</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Up</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:GetParameterValuesResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- 
+    Value Change Inform Notes:
+    1. Triggered when parameter with notification=1 or 2 changes
+    2. CommandKey should match the one from SetParameterValues that caused the change
+    3. ParameterList contains the changed parameters
+    4. ACS may verify changes with GetParameterValues
+-->

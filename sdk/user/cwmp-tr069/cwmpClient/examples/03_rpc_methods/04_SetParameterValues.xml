@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    SetParameterValues RPC Method Example
+    Used to write parameter values to the CPE
+-->
+
+<!-- ACS -> CPE: SetParameterValues Request -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">30001</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:SetParameterValues>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[6]">
+                <!-- WiFi Configuration -->
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">MyHome_WiFi</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Channel</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">11</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Enable</Name>
+                    <Value xsi:type="xsd:boolean" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">true</Value>
+                </ParameterValueStruct>
+                <!-- Management Server Configuration -->
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.PeriodicInformInterval</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1800</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.PeriodicInformEnable</Name>
+                    <Value xsi:type="xsd:boolean" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">true</Value>
+                </ParameterValueStruct>
+                <!-- Device Configuration -->
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.Time.NTPServer1</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">pool.ntp.org</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+            <ParameterKey>Config_Update_001</ParameterKey>
+        </cwmp:SetParameterValues>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE -> ACS: SetParameterValuesResponse (Success) -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">30001</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:SetParameterValuesResponse>
+            <Status>0</Status>
+        </cwmp:SetParameterValuesResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- Example 2: SetParameterValues with Error Response -->
+<!-- ACS -> CPE: SetParameterValues Request (Invalid Parameter) -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">30002</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:SetParameterValues>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[2]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Channel</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">999</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SerialNumber</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">NewSerial123</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+            <ParameterKey>Invalid_Config_001</ParameterKey>
+        </cwmp:SetParameterValues>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE -> ACS: SetParameterValuesResponse (Fault) -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">30002</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <soap:Fault>
+            <faultcode>Client</faultcode>
+            <faultstring>CWMP fault</faultstring>
+            <detail>
+                <cwmp:Fault>
+                    <FaultCode>9007</FaultCode>
+                    <FaultString>Invalid parameter value</FaultString>
+                    <SetParameterValuesFault soap:arrayType="cwmp:SetParameterValuesFault[2]">
+                        <SetParameterValuesFault>
+                            <ParameterName>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.Channel</ParameterName>
+                            <FaultCode>9007</FaultCode>
+                            <FaultString>Channel 999 is out of valid range (1-14)</FaultString>
+                        </SetParameterValuesFault>
+                        <SetParameterValuesFault>
+                            <ParameterName>InternetGatewayDevice.DeviceInfo.SerialNumber</ParameterName>
+                            <FaultCode>9008</FaultCode>
+                            <FaultString>Attempt to set non-writable parameter</FaultString>
+                        </SetParameterValuesFault>
+                    </SetParameterValuesFault>
+                </cwmp:Fault>
+            </detail>
+        </soap:Fault>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- Example 3: SetParameterValues triggering Value Change Inform -->
+<!-- ACS -> CPE: SetParameterValues with notification parameters -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">30003</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:SetParameterValues>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[1]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">NewSSID_2024</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+            <ParameterKey>SSID_Change_001</ParameterKey>
+        </cwmp:SetParameterValues>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE -> ACS: SetParameterValuesResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">30003</cwmp:ID>
+        <cwmp:NoMoreRequests>1</cwmp:NoMoreRequests>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:SetParameterValuesResponse>
+            <Status>1</Status>
+        </cwmp:SetParameterValuesResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- Note: If Status=1, CPE will send Value Change Inform in a new session -->
+
+<!-- 
+    SetParameterValues Notes:
+    1. ParameterKey is used to track configuration changes
+    2. Status=0: Changes applied immediately, no reboot required
+    3. Status=1: Changes applied, Value Change Inform will be sent
+    4. Individual parameter faults are reported in SetParameterValuesFault array
+    5. Common fault codes: 9005 (Invalid name), 9007 (Invalid value), 9008 (Non-writable)
+-->
