@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Bootstrap Inform Session
+    First connection after factory reset or initial deployment
+-->
+
+<!-- CPE -> ACS: Bootstrap Inform -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">10001</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:Inform>
+            <DeviceId>
+                <Manufacturer>Realtek</Manufacturer>
+                <OUI>00E04C</OUI>
+                <ProductClass>RTL8672</ProductClass>
+                <SerialNumber>RTK123456789</SerialNumber>
+            </DeviceId>
+            <Event soap:arrayType="cwmp:EventStruct[1]">
+                <EventStruct>
+                    <EventCode>0 BOOTSTRAP</EventCode>
+                    <CommandKey></CommandKey>
+                </EventStruct>
+            </Event>
+            <MaxEnvelopes>1</MaxEnvelopes>
+            <CurrentTime>2024-01-15T10:00:00Z</CurrentTime>
+            <RetryCount>0</RetryCount>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[12]">
+                <!-- Device Information -->
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.Manufacturer</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Realtek</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ManufacturerOUI</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">00E04C</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ProductClass</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">RTL8672</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SerialNumber</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">RTK123456789</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.HardwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SoftwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2.0.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ProvisioningCode</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></Value>
+                </ParameterValueStruct>
+                <!-- Management Server Info -->
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.URL</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">http://acs.example.com:7547/</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.Username</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">cpe_user</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.PeriodicInformEnable</Name>
+                    <Value xsi:type="xsd:boolean" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">true</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.PeriodicInformInterval</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">3600</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.ConnectionRequestURL</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">http://192.168.1.1:7547/</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:Inform>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- ACS -> CPE: InformResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">10001</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:InformResponse>
+            <MaxEnvelopes>1</MaxEnvelopes>
+        </cwmp:InformResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- 
+    Bootstrap Inform Notes:
+    1. Sent only on first connection after factory reset
+    2. Contains comprehensive device information
+    3. ACS typically responds with initial configuration
+    4. May be followed by SetParameterValues or AddObject RPCs
+-->

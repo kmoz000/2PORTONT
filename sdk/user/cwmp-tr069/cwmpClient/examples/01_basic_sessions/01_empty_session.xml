@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Empty TR-069 Session Example
+    Shows minimal Inform/InformResponse exchange
+-->
+
+<!-- CPE -> ACS: Inform Request -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">1001</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:Inform>
+            <DeviceId>
+                <Manufacturer>ExampleManufacturer</Manufacturer>
+                <OUI>123456</OUI>
+                <ProductClass>ExampleProduct</ProductClass>
+                <SerialNumber>SN123456789</SerialNumber>
+            </DeviceId>
+            <Event soap:arrayType="cwmp:EventStruct[1]">
+                <EventStruct>
+                    <EventCode>2 PERIODIC</EventCode>
+                    <CommandKey></CommandKey>
+                </EventStruct>
+            </Event>
+            <MaxEnvelopes>1</MaxEnvelopes>
+            <CurrentTime>2024-01-15T10:30:00Z</CurrentTime>
+            <RetryCount>0</RetryCount>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[0]">
+            </ParameterList>
+        </cwmp:Inform>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- ACS -> CPE: InformResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">1001</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:InformResponse>
+            <MaxEnvelopes>1</MaxEnvelopes>
+        </cwmp:InformResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- Session Termination: Empty HTTP Response from ACS -->
+<!-- This indicates end of session -->

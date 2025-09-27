@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    GetParameterValues RPC Method Example
+    Used to read parameter values from the CPE
+-->
+
+<!-- ACS -> CPE: GetParameterValues Request -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">20003</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValues>
+            <ParameterNames soap:arrayType="xsd:string[8]">
+                <string>InternetGatewayDevice.DeviceInfo.Manufacturer</string>
+                <string>InternetGatewayDevice.DeviceInfo.SerialNumber</string>
+                <string>InternetGatewayDevice.DeviceInfo.SoftwareVersion</string>
+                <string>InternetGatewayDevice.DeviceInfo.UpTime</string>
+                <string>InternetGatewayDevice.ManagementServer.URL</string>
+                <string>InternetGatewayDevice.ManagementServer.PeriodicInformInterval</string>
+                <string>InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig.1.Status</string>
+                <string>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.ConnectionStatus</string>
+            </ParameterNames>
+        </cwmp:GetParameterValues>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE -> ACS: GetParameterValuesResponse -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">20003</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValuesResponse>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[8]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.Manufacturer</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Realtek</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SerialNumber</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">RTK123456789</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SoftwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2.0.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.UpTime</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">86400</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.URL</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">http://acs.example.com:7547/</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.ManagementServer.PeriodicInformInterval</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">3600</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig.1.Status</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Up</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.WANDevice.1.WANConnectionDevice.1.WANIPConnection.1.ConnectionStatus</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Connected</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:GetParameterValuesResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- Example 2: GetParameterValues with partial path (gets all sub-parameters) -->
+<!-- ACS -> CPE: GetParameterValues Request (Partial Path) -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">20004</cwmp:ID>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValues>
+            <ParameterNames soap:arrayType="xsd:string[1]">
+                <string>InternetGatewayDevice.DeviceInfo.</string>
+            </ParameterNames>
+        </cwmp:GetParameterValues>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- CPE -> ACS: GetParameterValuesResponse (All DeviceInfo parameters) -->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:cwmp="urn:dslforum-org:cwmp-1-0">
+    <soap:Header>
+        <cwmp:ID soap:mustUnderstand="1">20004</cwmp:ID>
+        <cwmp:NoMoreRequests>1</cwmp:NoMoreRequests>
+    </soap:Header>
+    <soap:Body>
+        <cwmp:GetParameterValuesResponse>
+            <ParameterList soap:arrayType="cwmp:ParameterValueStruct[15]">
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.Manufacturer</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Realtek</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ManufacturerOUI</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">00E04C</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ModelName</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">RTL8672</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.Description</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">ADSL2+ Wireless Gateway</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ProductClass</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">RTL8672</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SerialNumber</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">RTK123456789</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.HardwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SoftwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2.0.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.EnabledOptions</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">ADSL2+,WiFi,VoIP</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.AdditionalHardwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.AdditionalSoftwareVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.SpecVersion</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">1.0</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.ProvisioningCode</Name>
+                    <Value xsi:type="xsd:string" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.UpTime</Name>
+                    <Value xsi:type="xsd:unsignedInt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">86400</Value>
+                </ParameterValueStruct>
+                <ParameterValueStruct>
+                    <Name>InternetGatewayDevice.DeviceInfo.FirstUseDate</Name>
+                    <Value xsi:type="xsd:dateTime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2024-01-15T00:00:00Z</Value>
+                </ParameterValueStruct>
+            </ParameterList>
+        </cwmp:GetParameterValuesResponse>
+    </soap:Body>
+</soap:Envelope>
+
+<!-- 
+    GetParameterValues Notes:
+    1. Can request specific parameters or use partial paths ending with '.'
+    2. Partial paths return all sub-parameters
+    3. ParameterNames array can contain mix of full and partial paths
+    4. Response contains exact parameter names and typed values
+    5. Unknown parameters result in fault 9005 (Invalid parameter name)
+-->
